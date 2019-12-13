@@ -1,0 +1,119 @@
+from tkinter import *
+from tkinter import ttk
+from tkinter import messagebox
+import pandas as pd
+# reading csv file
+pz=pd.read_csv('pizza.csv')
+pz.index=['Regular','Medium','Large']
+#pz=pz.drop(['Unnamed: 0'],axis=1)
+
+top=Tk()
+top.geometry('645x345')
+top.title('Pizza Delivery System')
+top.resizable(height=False,width=False)
+def getvals():
+    e11=pizzatypec1.get()
+    e12=pizzavegtype.get()
+    e21=pizzatypec2.get()
+    e22=pizzanonvegtype.get()
+    #print(e11,e12,e21,e22)
+    ord1=''
+    ord2=''
+    order=''
+    amt=0
+    pr1=0
+    pr2=0
+    if e12!='' or e22!='':
+        if e12!="":
+            #print(e11,e12,pz.loc[e11,e12])
+            
+            pr1=pz.loc[e11,e12]
+            
+            ord1='%s %s Amount Rs. %d '%(e11,e12,pr1)
+            #print(ord1)
+        
+        if e22!='':
+            #print(e21,e22,pz.loc[e21,e22])
+            
+            pr2=pz.loc[e21,e22]
+            ord2='%s %s Amount Rs. %d '%(e21,e22,pr2)
+        amt=pr1+pr2
+        order=f' {ord1} \n {ord2} \n Total Amount {amt}'
+        
+        #print(order)
+        messagebox.showinfo('Order Details',order)
+    else:
+        messagebox.showerror('Choose','No Pizza selected')
+
+namevalue=StringVar()
+phonevalue=StringVar()
+pizzatypevalue=StringVar()
+addrvalue=StringVar()
+Email_Idvalue=StringVar()
+
+veglabel=Label(top, text="Veg Type",fg='green')
+veglabel.grid(row=1 ,column=0)
+
+
+pizzalistveg=['','Deluxe Veggie','Farmhouse','Peppy Paneer']
+pizzavegtype=ttk.Combobox(top,values=pizzalistveg,width=17)
+pizzavegtype.current(0)
+pizzavegtype.grid(row=1,column=1)
+
+pizzatypelabel1=Label(top, text="Pizza Size",fg='royalblue')
+pizzatypelabel1.grid(row=1 ,column=2)
+
+pizzalist=['Regular','Medium','Large']
+pizzatypec1=ttk.Combobox(top,values=pizzalist,width=17)
+pizzatypec1.current(0)
+pizzatypec1.grid(row=1,column=3)
+    
+
+nonveglabel=Label(top, text="Non-Veg Type",fg='brown')
+nonveglabel.grid(row=2 ,column=0)
+
+
+pizzalistnonveg=['','Chicken Pepperoni','Chicken Dominator','Bhuna Merg']
+pizzanonvegtype=ttk.Combobox(top,values=pizzalistnonveg,width=17)
+pizzanonvegtype.current(0)
+pizzanonvegtype.grid(row=2,column=1)
+
+
+pizzatypelabel2=Label(top, text="Pizza Size",fg='royalblue')
+pizzatypelabel2.grid(row=2 ,column=2)
+
+    #pizzalist=['Size','Small','Medium','Large']
+pizzatypec2=ttk.Combobox(top,values=pizzalist,width=17)
+pizzatypec2.current(0)
+pizzatypec2.grid(row=2,column=3)
+
+    
+
+    
+namelabel=Label(top, text="Name")
+namelabel.grid(row=4 ,column=0)
+nameentry=Entry(top,textvariable=namevalue)
+nameentry.grid(row=4,column=1)
+
+
+phonelabel=Label(top, text="Phone")
+phonelabel.grid(row=5 ,column=0)
+phoneentry=Entry(top,textvariable=phonevalue)
+phoneentry.grid(row=5,column=1)
+    
+
+Email_Idlabel=Label(top,text="Email Id")
+Email_Idlabel.grid(row=6,column=0)
+Email_Identry=Entry(top,textvariable=Email_Idvalue)
+Email_Identry.grid(row=6,column=1)
+
+addrlabel=Label(top, text="Address")
+addrlabel.grid(row=7 ,column=0)
+addrentry=Entry(top,textvariable=addrvalue)
+addrentry.grid(row=7,column=1)
+
+    
+B10=Button(top,text="Order Now",command=getvals,fg='blue',font='helvetica 15 bold')
+B10.grid(row=8,column=1)
+
+top.mainloop()
